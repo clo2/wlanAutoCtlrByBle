@@ -1,7 +1,10 @@
 package test.cl.wlanautoctrlbyble;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,6 +14,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //実験
+        Intent intent = new Intent(getApplicationContext(),BleTestActivity.class);
+        startActivity(intent);
+
+        WifiManager wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+
+        //家に帰ってきた判定
+
+        //Wifi ON
+        if (wifiManager.isWifiEnabled() == false) {
+            wifiManager.setWifiEnabled(true);
+        }
+
+
     }
 
     @Override
