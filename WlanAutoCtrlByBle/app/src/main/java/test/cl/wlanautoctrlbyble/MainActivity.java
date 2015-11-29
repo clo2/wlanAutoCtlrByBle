@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //実験
-        Intent intent = new Intent(getApplicationContext(),BleTestActivity.class);
+        Intent intent = new Intent(getApplicationContext(),CentralActivity.class);
         startActivity(intent);
 
         WifiManager wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);

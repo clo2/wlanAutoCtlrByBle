@@ -14,6 +14,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,12 +43,12 @@ public class BleTestActivity extends Activity implements BluetoothAdapter.LeScan
     //private static final String DEVICE_BUTTON_SENSOR_CHARACTERISTIC_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb";
     private static final String DEVICE_BUTTON_SENSOR_CHARACTERISTIC_UUID = "00005501-d102-11e1-9b23-00025b00a5a5";//CSR SPP用デスクリプタ-
 
-
-
     /** キャラクタリスティック設定UUID */
     //private static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
     //private static final String CLIENT_CHARACTERISTIC_CONFIG = "000052c1-0000-1000-8000-00805f9b34fb";
     private static final String CLIENT_CHARACTERISTIC_CONFIG = "00005501-d102-11e1-9b23-00025b00a5a5";//CSR SPP Notification 受信用
+
+    private final static int SDKVER_LOLLIPOP = 21;
 
     private static final String TAG = "BLESample";
     private BleStatus mStatus = BleStatus.DISCONNECTED;
@@ -65,7 +66,9 @@ public class BleTestActivity extends Activity implements BluetoothAdapter.LeScan
         mBluetoothManager = (BluetoothManager)getSystemService(BLUETOOTH_SERVICE);
         mBluetoothAdapter = mBluetoothManager.getAdapter();
 
-        clickConnect();
+        //clickConnect();
+
+
 
         /*
         findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,40 @@ public class BleTestActivity extends Activity implements BluetoothAdapter.LeScan
         */
     }
 
+    private void scanNewDevice()
+    {
+        // OS ver.5.0以上ならBluetoothLeScannerを使用する.
+        if (Build.VERSION.SDK_INT >= SDKVER_LOLLIPOP)
+        {
+  //          this.startScanByBleScanner();
+        }
+        else
+        {
+            // デバイスの検出.
+    //        mBluetoothAdapter.startLeScan(mScanCallback);
+        }
+    }
+    /**
+    @TargetApi(SDKVER_LOLLIPOP)
+    private void startScanByBleScanner()
+    {
+        LeScanCallback mBleScanner = mBluetoothAdapter.getBluetoothLeScanner();
+        // デバイスの検出.
+        LeScanCallback mBleScanner.startScan(new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                super.onScanResult(callbackType, result);
+                // スキャン中に見つかったデバイスに接続を試みる.第三引数には接続後に呼ばれるBluetoothGattCallbackを指定する.
+                result.getDevice().connectGatt(getApplicationContext(), false, mBluetoothGattCallback);
+            }
+            @Override
+            public void onScanFailed(int intErrorCode)
+            {
+                super.onScanFailed(intErrorCode);
+            }
+        });
+    }
+    */
     /** BLE機器を検索する */
     private void clickConnect() {
         mHandler.postDelayed(new Runnable() {
